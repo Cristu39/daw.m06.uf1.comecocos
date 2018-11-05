@@ -47,17 +47,34 @@ and open the template in the editor.
             [0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         ];
-        var fantasma =  [1,1,"d"];
+        var fantasma1 =  [1,1,"s"];
+        var fantasma2 = [2,1,"s"];
+        var fantasma3 = [3,1,"s"];
+        var player = [1,28,"s"];
+        var mf1;
+        var mf2;
+        var mf3;
         for (var i = 0; i < map.length; i++) {
-            for (var j = 0; j < map.length; j++) {
-                if (map[i][j] == map[1][1]) {
+            for (var j = 0; j < map[i].length; j++) {
+                if ( i == fantasma1[0] && j == fantasma1[1]) {
+                    mf1 = map[i][j];
+                    map[i][j] = "f";
+                }
+                if ( i == fantasma2[0] && j == fantasma2[1]) {
+                    mf2 = map[i][j];
+                    map[i][j] = "f";
+                }
+                if ( i == fantasma3[0] && j == fantasma3[1]) {
+                    mf3 = map[i][j];
                     map[i][j] = "f";
                 }
                 row += map[i][j] + " ";
             }
-            console.log(row);
+            document.write(row);
+            document.write("</br>");
             row="";
         }
+        
     </script>
 
 </html>
