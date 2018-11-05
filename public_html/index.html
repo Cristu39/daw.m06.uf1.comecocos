@@ -47,7 +47,12 @@ and open the template in the editor.
             [0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         ];
-        var fantasma1 =  [1,1,"s"];
+        var x = 0;
+        var y = 0;
+        
+        var fantasma1 = [];
+        fantasma1 = checkPos(fantasma1);
+        
         var fantasma2 = [2,1,"s"];
         var fantasma3 = [3,1,"s"];
         var player = [1,28,"s"];
@@ -58,7 +63,7 @@ and open the template in the editor.
             for (var j = 0; j < map[i].length; j++) {
                 if ( i == fantasma1[0] && j == fantasma1[1]) {
                     mf1 = map[i][j];
-                    map[i][j] = "f";
+                    map[i][j] = "PHANTOM";
                 }
                 if ( i == fantasma2[0] && j == fantasma2[1]) {
                     mf2 = map[i][j];
@@ -73,6 +78,18 @@ and open the template in the editor.
             document.write(row);
             document.write("</br>");
             row="";
+        }
+        function checkPos(fantasma){
+            var positionx = Math.floor((Math.random() * 29) + 0);
+            var positiony = Math.floor((Math.random() * 29) + 0);
+            
+            if (map[positionx][positiony] == 1) {
+                fantasma = [positionx,positiony,"s"];
+                return fantasma;
+            }
+            else{
+                checkPos();
+            }
         }
         
     </script>
