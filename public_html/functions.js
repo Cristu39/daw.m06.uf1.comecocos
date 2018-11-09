@@ -4,8 +4,32 @@
  * and open the template in the editor.
  */
 
-var row ="";
-var map = [
+var row = "";
+var map = "";
+var fantasma1 = [];
+var fantasma2 = [];
+var fantasma3 = [];
+var player = [1,28,"s"];
+
+creaMapa();
+creaFantasmes();
+carregaFantasmes();
+window.setInterval(function(){  
+    document.body.innerHTML = "";
+    fantasma1 = move(fantasma1);
+    fantasma2 = move(fantasma2);
+    fantasma3 = move(fantasma3);
+    carregaFantasmes();
+}, 1000);
+clearInterval();
+
+function creaFantasmes(){
+    fantasma1 = inicialitzaFantasma(fantasma1);
+    fantasma2 = inicialitzaFantasma(fantasma2);
+    fantasma3 = inicialitzaFantasma(fantasma3);
+}
+function creaMapa(){
+    map = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0],
     [0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0],
@@ -37,46 +61,27 @@ var map = [
     [0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 ];
-var x = 0;
-var y = 0;
-//carregaMapa();
-
-var fantasma1 = [];
-fantasma1 = creaFantasma(fantasma1);
-
-var fantasma2 = [];
-fantasma2 = creaFantasma(fantasma2);
-var fantasma3 = [];
-fantasma3 = creaFantasma(fantasma3);
-
-var player = [1,28,"s"];
-var mf1;
-var mf2;
-var mf3;
-
-for (var i = 0; i < map.length; i++) {
-    for (var j = 0; j < map[i].length; j++) {
-        if ( i == fantasma1[0] && j == fantasma1[1]) {
-            mf1 = map[i][j];
-            map[i][j] = "F";
-        }
-        if ( i == fantasma2[0] && j == fantasma2[1]) {
-            mf2 = map[i][j];
-            map[i][j] = "F";
-        }
-        if ( i == fantasma3[0] && j == fantasma3[1]) {
-            mf3 = map[i][j];
-            map[i][j] = "F";
-        }
-        row += map[i][j] + " ";
-    }
-    document.write(row);
-    document.write("</br>");
-    row="";
 }
-
-
-function creaFantasma(fantasma){
+function carregaFantasmes(){
+    for (var i = 0; i < map.length; i++) {
+        for (var j = 0; j < map[i].length; j++) {
+            if ( i == fantasma1[0] && j == fantasma1[1]) {
+                map[i][j] = "F";
+            }
+            if ( i == fantasma2[0] && j == fantasma2[1]) {
+                map[i][j] = "F";
+            }
+            if ( i == fantasma3[0] && j == fantasma3[1]) {
+                map[i][j] = "F";
+            }
+            row += map[i][j] + " ";
+        }
+        document.write(row);
+        document.write("</br>");
+        row="";
+    }
+}
+function inicialitzaFantasma(fantasma){
     var bool = false;
     var posi = false;
     var values = ['a','w','d','s'];
@@ -114,13 +119,63 @@ function creaFantasma(fantasma){
     }
     return fantasma;
 }
-function carregaMapa(){
-    for (var i = 0; i < map.length; i++) {
-        for (var j = 0; j < map[i].length; j++) {
-            row += map[i][j] + " ";
+function move(fantasma){
+    if (fantasma[2] == 'a') {
+        if(map[fantasma[0]][fantasma[1]-1] == 1){
+            map[fantasma[0]][fantasma[1]] = 1;
+            fantasma = [fantasma[0], fantasma[1]-1, 'a'];
+        }else{
+            map[fantasma[0]][fantasma[1]] = 1;
+            var look = Math.floor(Math.random() * 2);
+            //el valor 0 pujarà, el 1 baixarà
+            switch(look){
+                case 0: fantasma = [fantasma[0]-1, fantasma[1], 'w']; break;
+                case 1: fantasma = [fantasma[0]+1, fantasma[1], 's']; break;
+            }
         }
-        document.write(row);
-        document.write("</br>");
-        row="";
+    }else if(fantasma[2] == 'w'){
+        if(map[fantasma[0]-1][fantasma[1]] == 1){
+            map[fantasma[0]][fantasma[1]] = 1;
+            fantasma = [fantasma[0]-1, fantasma[1], 'w'];
+        }else{
+            map[fantasma[0]][fantasma[1]] = 1;
+            //0 dreta, 1 esquerre
+            var look = Math.floor(Math.random() * 2);
+            switch(look){
+                case 0: fantasma = [fantasma[0], fantasma[1]+1, 'd']; break;
+                case 1: fantasma = [fantasma[0], fantasma[1]-1, 'a']; break;
+            }
+        }
     }
+    else if(fantasma[2] == 'd'){
+        if(map[fantasma[0]][fantasma[1]+1] == 1){
+            map[fantasma[0]][fantasma[1]] = 1;
+            fantasma = [fantasma[0], fantasma[1]+1, 'd'];
+        }else{
+            
+            map[fantasma[0]][fantasma[1]] = 1;
+            var look = Math.floor(Math.random() * 2);
+            //el valor 0 pujarà, el 1 baixarà
+            switch(look){
+                case 0: fantasma = [fantasma[0]-1, fantasma[1], 'w']; break;
+                case 1: fantasma = [fantasma[0]+1, fantasma[1], 's']; break;
+            }
+        }
+    }
+    else if(fantasma[2] == 's'){
+        if(map[fantasma[0]+1][fantasma[1]] == 1){
+            map[fantasma[0]][fantasma[1]] = 1;
+            fantasma = [fantasma[0]+1, fantasma[1], 's'];
+        }else{
+            map[fantasma[0]][fantasma[1]] = 1;
+            var look = Math.floor(Math.random() * 2);
+            //0 dreta, 1 esquerre
+            var look = Math.floor(Math.random() * 2);
+            switch(look){
+                case 0: fantasma = [fantasma[0], fantasma[1]+1, 'd']; break;
+                case 1: fantasma = [fantasma[0], fantasma[1]-1, 'a']; break;
+            }
+        }
+    }
+    return fantasma;
 }
